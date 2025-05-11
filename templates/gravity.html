@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симуляция гравитации</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="gravity-form" role="form" aria-label="Настройка симуляции гравитации">
+        <h1>Симуляция гравитации</h1>
+        <div class="instructions" role="region" aria-label="Инструкция">
+            Добавьте тела с массой (1–10 условных единиц), координатами (X, Y, в пикселях: X от -400 до 400, Y от -300 до 300) и скоростями (в пикселях/с). Звук: частота (Гц) от массы, панорама от X, громкость от расстояния до центра. Столкновение — шум. Остановка — клавиша "S".
+        </div>
+        <div class="formulas" role="region" aria-label="Формулы и модель гравитации">
+            <h2>Упрощённая модель гравитации</h2>
+            <p>Эта симуляция использует упрощённый закон тяготения для заметного движения тел. Реальная гравитационная постоянная (\( G = 6.67430 \times 10^{-11} \, \text{м}^3 \text{кг}^{-1} \text{с}^{-2} \)) даёт слишком малые ускорения для интерактивной симуляции, поэтому мы используем условный коэффициент \( k = 1000 \).</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML" role="math">
+                <mrow>
+                    <mi>F</mi><mo>=</mo><mi>k</mi><mo>⋅</mo><mfrac><mrow><mi>m</mi><mi>1</mi><mo>⋅</mo><mi>m</mi><mi>2</mi></mrow><msup><mi>r</mi><mn>2</mn></msup></mfrac>
+                </mrow>
+            </math>
+            <p>Сила \( F \) пропорциональна произведению масс \( m_1 \) и \( m_2 \) и обратно пропорциональна квадрату расстояния \( r \).</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML" role="math">
+                <mrow>
+                    <mi>a</mi><mo>=</mo><mfrac><mi>F</mi><mi>m</mi></mfrac>
+                </mrow>
+            </math>
+            <p>Ускорение: \( a = F/m \), где \( m \) — масса тела.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML" role="math">
+                <mrow>
+                    <mi>v</mi><mo>=</mo><mi>v</mi><mn>0</mn><mo>+</mo><mi>a</mi><mi>t</mi>
+                </mrow>
+            </math>
+            <p>Скорость: \( v = v_0 + a t \), где \( v_0 \) — начальная скорость, \( t \) — время.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML" role="math">
+                <mrow>
+                    <mi>r</mi><mo>=</mo><mi>r</mi><mn>0</mn><mo>+</mo><mi>v</mi><mi>t</mi>
+                </mrow>
+            </math>
+            <p>Позиция: \( r = r_0 + v t \), где \( r_0 \) — начальная позиция.</p>
+        </div>
+        <button id="add-body" onclick="addBody()" aria-label="Добавить новое тело">Добавить тело</button>
+        <div id="bodies" role="group" aria-label="Список тел"></div>
+        <canvas id="gravity-canvas" width="800" height="600" aria-hidden="true"></canvas>
+        <div class="speed-controls" role="group" aria-label="Управление скоростью симуляции">
+            <button onclick="setSpeed(1)" aria-label="Скорость 1x">1x</button>
+            <button onclick="setSpeed(2)" aria-label="Скорость 2x">2x</button>
+            <button onclick="setSpeed(5)" aria-label="Скорость 5x">5x</button>
+        </div>
+        <button onclick="startGravity()" aria-label="Запустить симуляцию">Запустить</button>
+        <button onclick="window.location.href='/experiments'" aria-label="Вернуться в меню экспериментов">Назад</button>
+    </div>
+    <script src="/static/Tone.js"></script>
+    <script src="/static/audio.js"></script>
+    <script>
+        let bodyCount = 0;
+        const maxBodies = 16;
+
+        // Добавление нового тела
+        function addBody() {
+            if (bodyCount >= maxBodies) {
+                alert('Максимум тел: 16.');
+                return;
+            }
+            bodyCount++;
+            const bodiesDiv = document.getElementById('bodies');
+            const bodyHtml = `
+                <div class="body-input active" role="group" aria-label="Тело ${bodyCount}">
+                    <h2>Тело ${bodyCount}</h2>
+                    <input type="number" class="mass" placeholder="Масса (1–10 усл. ед.)" min="1" max="10" aria-label="Масса тела в условных единицах">
+                    <input type="number" class="x" placeholder="X (-400–400 пикс)" min="-400" max="400" aria-label="Координата X в пикселях">
+                    <input type="number" class="y" placeholder="Y (-300–300 пикс)" min="-300" max="300" aria-label="Координата Y в пикселях">
+                    <input type="number" class="vx" placeholder="Скорость X (пикс/с)" aria-label="Скорость по X в пикселях в секунду">
+                    <input type="number" class="vy" placeholder="Скорость Y (пикс/с)" aria-label="Скорость по Y в пикселях в секунду">
+                    <input type="number" class="tone" placeholder="Тон (100–1000 Гц)" min="100" max="1000" value="261.63" aria-label="Тональность звука в герцах">
+                    <button class="preview-button" onclick="previewTone(this.previousElementSibling.value)" aria-label="Предпрослушать тон">Прослушать</button>
+                </div>`;
+            bodiesDiv.insertAdjacentHTML('beforeend', bodyHtml);
+        }
+    </script>
+</body>
+</html>

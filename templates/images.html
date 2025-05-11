@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сонификация изображений</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="images-list" role="menu" aria-label="Выбор изображений">
+        <h1>Сонификация изображений</h1>
+        <div class="instructions">
+            Яркость — высота нот, цвет — инструмент (красный — пианино, зелёный — струнные, синий — флейта, жёлтый — духовые). Эффекты: реверберация для пианино/струнных, хорус для флейты/духовых. Панорама — положение. Выберите изображение.
+        </div>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% for image in images %}
+            <button onclick="sonifyImage('{{ image.url }}')" aria-label="{{ image.title }}: {{ image.description }}">
+                {{ image.title }}: {{ image.description }}
+            </button>
+            <img src="{{ image.url }}" alt="{{ image.title }}">
+        {% endfor %}
+        <div id="sonify-container" class="sonify-container"></div>
+        <button onclick="window.location.href='/experiments'" aria-label="Вернуться в меню экспериментов">Назад</button>
+    </div>
+    <script src="/static/Tone.js"></script>
+    <script src="/static/audio.js"></script>
+</body>
+</html>
