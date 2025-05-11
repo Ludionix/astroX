@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    font-size: 20px;
+}
+
+button {
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    background: #4a4a4a;
+    color: #fff;
+    border: 2px solid #00f;
+    border-radius: 5px;
+    transition: background 0.3s, outline 0.1s;
+}
+
+button:hover, button:focus {
+    background: #666;
+    outline: 4px solid #0f0;
+}
+
+input, select {
+    padding: 10px;
+    margin: 5px;
+    font-size: 18px;
+    background: #333;
+    color: #fff;
+    border: 2px solid #00f;
+    border-radius: 5px;
+}
+
+#menu, #gravity-form, #images-list, #theory-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.instructions {
+    background: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.body-input {
+    display: none;
+    border: 1px solid #00f;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.body-input.active {
+    display: block;
+}
+
+#theory-content *:focus {
+    outline: 3px solid #0f0;
+}
+
+img {
+    max-width: 200px;
+    margin: 10px;
+}
+
+canvas {
+    border: 1px solid #00f;
+    background: #000;
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 10px;
+    font-size: 18px;
+}
+
+.speed-controls button {
+    padding: 10px 20px;
+}
+
+.preview-button {
+    background: #006600;
+}
+
+.error {
+    color: #f00;
+    font-weight: bold;
+}
+
+.sonify-container {
+    position: relative;
+    display: inline-block;
+}
+
+.sonify-image {
+    max-width: 400px;
+}
+
+.scan-line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #0f0;
+    transition: left 0.1s linear;
+}
+
+.formulas {
+    background: #333;
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 5px;
+    max-width: 600px;
+    text-align: left;
+}
+
+a { color: #0ff; text-decoration: underline; }
+h1, h2, h3 { color: #fff; }
+
+@media (max-width: 600px) {
+    body { font-size: 16px; padding: 10px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    input, select { font-size: 14px; }
+    #menu, #gravity-form, #images-list, #theory-content { max-width: 100%; }
+}
